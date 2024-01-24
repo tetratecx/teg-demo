@@ -84,7 +84,6 @@ function remove_aks_cluster {
   fi
 }
 
-
 # Print info an azure aks cluster
 #   args:
 #     (1) json config
@@ -95,15 +94,18 @@ function info_aks_cluster {
   local kubeconfig_file; kubeconfig_file=$(echo "${json_config}" | jq -r '.kubeconfig_file') ;
   local resourcegroup_name; resourcegroup_name=$(echo "${json_config}" | jq -r '.resourcegroup_name') ;
 
-  print_command "az aks show --resource-group ${resourcegroup_name} --name ${cluster_name}" --output table ;
+  print_command "az resource list --resource-group ${resourcegroup_name} --output table" ;
+  az resource list --resource-group "${resourcegroup_name}" --output table ;
+
+  print_command "az aks show --resource-group ${resourcegroup_name} --name ${cluster_name} --output table" ;
   az aks show --resource-group "${resourcegroup_name}" --name "${cluster_name}" --output table ;
 
   print_command "kubectl --kubeconfig ${kubeconfig_file} cluster-info" ;
   kubectl --kubeconfig "${kubeconfig_file}" cluster-info ;
 
-  print_command "kubectl --kubeconfig ${kubeconfig_file} get nodes -o wide" ;
-  kubectl --kubeconfig "${kubeconfig_file}" get nodes  -o wide ;
+  print_command "kubectl --kubeconfig ${kubeconfig_file} get nodes --output wide" ;
+  kubectl --kubeconfig "${kubeconfig_file}" get nodes --output wide ;
 
-  print_command "kubectl --kubeconfig ${kubeconfig_file} get pods --all-namespaces -o wide" ;
-  kubectl --kubeconfig "${kubeconfig_file}" get pods --all-namespaces  -o wide ;
+  print_command "kubectl --kubeconfig ${kubeconfig_file} get pods --all-namespaces --output wide" ;
+  kubectl --kubeconfig "${kubeconfig_file}" get pods --all-namespaces --output wide ;
 }
