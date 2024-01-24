@@ -15,42 +15,42 @@ info: infra-info scenario-info ## Get information about infra environment and sc
 
 .PHONY: prereq-check
 prereq-check: ## Check if prerequisites are installed
-	@/bin/sh -c './prereq.sh --check'
+	# @/bin/sh -c './make.sh --prereq-check'
 
 .PHONY: infra-up
-infra-up: prereq-check ## Bring up and configure local or cloud infra
-	@/bin/bash -c './infra.sh --up'
+infra-up: prereq-check ## Bring up and configure the infrastructure
+	@/bin/bash -c './make.sh --infra-up'
 
 .PHONY: infra-down
-infra-down: ## Bring down  local or cloud infra
-	@/bin/bash -c './infra.sh --down'
+infra-down: ## Bring down the infrastructure
+	@/bin/bash -c './make.sh --infra-down'
 
 .PHONY: infra-info
-infra-info: ## Get infra environment info
-	@/bin/bash -c './infra.sh --info'
+infra-info: ## Get infrastructure information
+	@/bin/bash -c './make.sh --infra-info'
 
 .PHONY: teg-install
-teg-install: ## Install TEG
-	@/bin/bash -c './teg.sh --install'
+teg-install: ## Install Tetrate Envoy Gateway (TEG)
+	@/bin/bash -c './make.sh --teg-install'
 
 .PHONY: teg-uninstall
-teg-uninstall: ## Uninstall TEG
-	@/bin/bash -c './teg.sh --uninstall'
+teg-uninstall: ## Uninstall Tetrate Envoy Gateway (TEG)
+	@/bin/bash -c './make.sh --teg-uninstall'
 
 .PHONY: scenario-deploy
 scenario-deploy: ## Deploy the scenario
-	@/bin/bash -c './scenario.sh --deploy'
+	@/bin/bash -c './make.sh --scenario-deploy'
 
 .PHONY: scenario-undeploy
 scenario-undeploy: ## Undeploy the scenario
-	@/bin/bash -c './scenario.sh --undeploy'
+	@/bin/bash -c './make.sh --scenario-undeploy'
 
 .PHONY: scenario-info
-scenario-info: ## Info about the scenario
-	@/bin/bash -c './scenario.sh --info'
+scenario-info: ## Get scenario information
+	@/bin/bash -c './make.sh --scenario-info'
 
 
 .PHONY: clean
 clean: ## Clean up all resources
-	@/bin/bash -c './infra.sh --clean'
+	@/bin/bash -c './make.sh --clean'
 	@/bin/bash -c 'rm -rf ./output/*'
