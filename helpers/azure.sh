@@ -83,3 +83,27 @@ function remove_aks_cluster {
     return 1;
   fi
 }
+
+
+# Print info an azure aks cluster
+#   args:
+#     (1) json config
+function info_aks_cluster {
+  [[ -z "${1}" ]] && print_error "Please provide json config as 1st argument" && return 2 || local json_config="${1}" ;
+
+  local cluster_name; cluster_name=$(echo "${json_config}" | jq -r '.cluster_name') ;
+  local kubeconfig_file; kubeconfig_file=$(echo "${json_config}" | jq -r '.kubeconfig_file') ;
+  local resourcegroup_name; resourcegroup_name=$(echo "${json_config}" | jq -r '.resourcegroup_name') ;
+
+  print_command "az aks show --resource-group ${resourcegroup_name} --name ${cluster_name}" --output table ;
+  az aks show --resource-group "${resourcegroup_name}" --name "${cluster_name}" --output table ;
+
+  print_command "kubectl --kubeconfig ${kubeconfig_file} cluster-info" ;
+  kubectl --kubeconfig "${kubeconfig_file}" cluster-info ;
+
+  print_command "kubectl --kubeconfig ${kubeconfig_file} get nodes -o wide" ;
+  kubectl --kubeconfig "${kubeconfig_file}" get nodes  -o wide ;
+
+  print_command "kubectl --kubeconfig ${kubeconfig_file} get pods --all-namespaces -o wide" ;
+  kubectl --kubeconfig "${kubeconfig_file}" get pods --all-namespaces  -o wide ;
+}

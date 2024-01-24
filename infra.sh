@@ -41,6 +41,8 @@ function down() {
 #
 function info() {
   print_info "Going to print info about the infrastructure" ;
+
+  info_aks_cluster "$(jq -c .azure_aks infra.json)" ;
 }
 
 # This function removes the instrastructure.
